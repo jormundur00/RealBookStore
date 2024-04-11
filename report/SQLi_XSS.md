@@ -21,9 +21,15 @@ Implementiranjem dodavanja komentara koriščenjem klase PreparedStatement umest
 
 # Cross-site scripting
 
+## Napad
+
 Stranica Users (http://localhost:8080/persons) nije zaštićena od cross-site scripting napada.
 Korisnik dodat prethodnim SQLInjection napadom kao atribut email ima JavaScript skriptu koja se pokreće pri pretrazi korisnika i ispisuje vrednost kolačića sesije u konzoli.
 
 ![SQLi_XSS_4](https://github.com/jormundur00/RealBookStore/assets/99336265/22754445-0325-4eba-b3fe-c0ea56d5934c)
 
 Kako kolačić sesije ima podešen HttpOnly fleg koji sprečava pregled kolačića korišćenjem metode document.cookie, u konzoli se ispisuje prazna niska.
+
+## Odbrana
+
+Korišćenjem atributa textContent umesto atributa innerHTML nad elementima korisnika, pretraživač ne izvršava skripte zadate kao vrednosti elemenata, već ih samo ispisuje.
