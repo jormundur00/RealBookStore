@@ -19,6 +19,8 @@ Odlaskom na stranicu Users (http://localhost:8080/persons) možemo videti da se 
 
 Implementiranjem dodavanja komentara koriščenjem klase PreparedStatement umesto klase Statement se maliciozni SQL kod ne izvršava, već samo ispisuje kao deo komentara.
 
+![SQLi_XSS_Odbrana_1](https://github.com/jormundur00/RealBookStore/assets/99336265/3c116911-d317-4e50-8adc-2c8a6e867659)
+
 # Cross-site scripting
 
 ## Napad
@@ -32,4 +34,6 @@ Kako kolačić sesije ima podešen HttpOnly fleg koji sprečava pregled kolači�
 
 ## Odbrana
 
-Korišćenjem atributa textContent umesto atributa innerHTML nad elementima korisnika, pretraživač ne izvršava skripte zadate kao vrednosti elemenata, već ih samo ispisuje.
+Korišćenjem atributa textContent umesto atributa innerHTML nad tekstualnim elementima korisnika, pretraživač ne izvršava skripte zadate kao vrednosti elemenata, već ih samo ispisuje.
+
+![SQLi_XSS_Odbrana_2](https://github.com/jormundur00/RealBookStore/assets/99336265/4cc88c02-83df-4fa9-b8ea-98a5046b3461)
