@@ -1,5 +1,7 @@
 # SQLInjection
 
+## Napad
+
 Dodavanjem komentara na stranicama pojedinačnih knjiga (http://localhost:8080/books/{id}) može da se izvrši SQLInjection napad.
 
 ![SQLi_XSS_1_v2](https://github.com/jormundur00/RealBookStore/assets/99336265/0d7c9627-e4d2-4d5b-b76c-3990730f7546)
@@ -12,6 +14,10 @@ Međutim, osim dodatog bezazlenog komentara, prethodni unos će u pozadini pokre
 Odlaskom na stranicu Users (http://localhost:8080/persons) možemo videti da se sada u listi korisnika nalazi novi korisnik dodat SQLInjection napadom.
 
 ![SQLi_XSS_3](https://github.com/jormundur00/RealBookStore/assets/99336265/1603d3a2-9a3c-433a-9da7-690e32eb04b6)
+
+## Odbrana
+
+Implementiranjem dodavanja komentara koriščenjem klase PreparedStatement umesto klase Statement se maliciozni SQL kod ne izvršava, već samo ispisuje kao deo komentara.
 
 # Cross-site scripting
 
