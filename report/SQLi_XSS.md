@@ -1,4 +1,4 @@
-# SQLInjection
+# SQL injection
 
 ## Napad
 

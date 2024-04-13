@@ -17,3 +17,7 @@ U datom primeru, pokretanjem skripte se menjaju lični podaci korisnika sa id = 
 ![CSRF_2](https://github.com/jormundur00/RealBookStore/assets/99336265/dbdaf9a2-7390-4e8b-af4e-f2a2f06551ec)
 ### Posle pokretanja skripte:
 ![CSRF_3](https://github.com/jormundur00/RealBookStore/assets/99336265/817b1a00-a3d8-4911-bc90-6f578cf3e224)
+
+## Odbrana
+
+Kreiranjem tokena na početku korisničke sesije i proverom vrednosti tokena pri svakom pozivu ažuriranja korisničkih informacija onemogućujemo promene od strane stranica koje nemaju istu vrednost tokena.
