@@ -56,11 +56,21 @@ public class PersonsController {
     }
 
     @DeleteMapping("/persons/{id}")
-    public ResponseEntity<Void> person(@PathVariable int id) {
-        personRepository.delete(id);
-        userRepository.delete(id);
+    @PreAuthorize("hasAuthority('UPDATE_PERSON')")
+    public ResponseEntity<Void> person(@PathVariable int id) throws AccessDeniedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User)authentication.getPrincipal();
+        int userId = user.getId();
+        List<Role> roles = roleRepository.findByUserId(userId);
+        for(Role role : roles) {
+            if (role.getName().equals("ADMIN") || userId == id) {
+                personRepository.delete(id);
+                userRepository.delete(id);
 
-        return ResponseEntity.noContent().build();
+                return ResponseEntity.noContent().build();
+            }
+        }
+        throw new AccessDeniedException("Forbidden");
     }
 
     @PostMapping("/update-person")
