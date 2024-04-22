@@ -33,7 +33,7 @@ public class PersonRepository {
                 personList.add(createPersonFromResultSet(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed retrieving persons list.", e);
         }
         return personList;
     }
@@ -48,6 +48,8 @@ public class PersonRepository {
             while (rs.next()) {
                 personList.add(createPersonFromResultSet(rs));
             }
+        } catch (SQLException e) {
+            LOG.warn("Failed person search for searchTerm '" + searchTerm + "'.", e);
         }
         return personList;
     }
@@ -61,7 +63,7 @@ public class PersonRepository {
                 return createPersonFromResultSet(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed retrieving person with id '" + personId + "'.", e);
         }
 
         return null;
@@ -74,7 +76,7 @@ public class PersonRepository {
         ) {
             statement.executeUpdate(query);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed deleting person with id '" + personId + "'.", e);
         }
     }
 
@@ -99,7 +101,7 @@ public class PersonRepository {
             statement.setString(2, email);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.warn("Failed updating person with id '" + personFromDb.getId() + "'.", e);
         }
     }
 }
