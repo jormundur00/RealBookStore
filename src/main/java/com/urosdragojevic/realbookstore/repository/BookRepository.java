@@ -118,6 +118,7 @@ public class BookRepository {
             statement.executeUpdate(query2);
             statement.executeUpdate(query3);
             statement.executeUpdate(query4);
+            auditLogger.audit("Deleted book with id '" + bookId + "'.");
         } catch (SQLException e) {
             LOG.error("Failed deleting book with id '" + bookId + "'.");
         }
