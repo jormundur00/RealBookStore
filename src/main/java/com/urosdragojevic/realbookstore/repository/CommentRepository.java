@@ -33,7 +33,7 @@ public class CommentRepository {
             statement.setString(3, comment.getComment());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed creating comment for book with id '" + comment.getBookId() + "' and comment '" + comment.getComment() + "'.", e);
         }
     }
 
@@ -47,7 +47,7 @@ public class CommentRepository {
                 commentList.add(new Comment(rs.getInt(1), rs.getInt(2), rs.getString(3)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed retrieving comments for book with id '" + bookId + "'.", e);
         }
         return commentList;
     }

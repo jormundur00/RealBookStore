@@ -1,6 +1,7 @@
 package com.urosdragojevic.realbookstore.repository;
 
 import com.urosdragojevic.realbookstore.audit.AuditLogger;
+import com.urosdragojevic.realbookstore.audit.Entity;
 import com.urosdragojevic.realbookstore.domain.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class PersonRepository {
                 personList.add(createPersonFromResultSet(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed retrieving persons list.", e);
         }
         return personList;
     }
@@ -48,6 +49,8 @@ public class PersonRepository {
             while (rs.next()) {
                 personList.add(createPersonFromResultSet(rs));
             }
+        } catch (SQLException e) {
+            LOG.warn("Failed person search for searchTerm '" + searchTerm + "'.", e);
         }
         return personList;
     }
@@ -61,7 +64,7 @@ public class PersonRepository {
                 return createPersonFromResultSet(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed retrieving person with id '" + personId + "'.", e);
         }
 
         return null;
@@ -73,8 +76,9 @@ public class PersonRepository {
              Statement statement = connection.createStatement();
         ) {
             statement.executeUpdate(query);
+            auditLogger.audit("Deleted person with id '" + personId + "'.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed deleting person with id '" + personId + "'.", e);
         }
     }
 
@@ -98,8 +102,13 @@ public class PersonRepository {
             statement.setString(1, firstName);
             statement.setString(2, email);
             statement.executeUpdate();
+            auditLogger.auditChange(new Entity("Person",
+                    String.valueOf(personUpdate.getId()),
+                    String.valueOf(personFromDb),
+                    String.valueOf(personUpdate)
+                    ));
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.warn("Failed updating person with id '" + personFromDb.getId() + "'.", e);
         }
     }
 }

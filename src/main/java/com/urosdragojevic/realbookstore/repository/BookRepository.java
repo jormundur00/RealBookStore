@@ -36,7 +36,7 @@ public class BookRepository {
                 bookList.add(book);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed retrieving book list.", e);
         }
         return bookList;
     }
@@ -54,6 +54,8 @@ public class BookRepository {
             while (rs.next()) {
                 bookList.add(createBookFromResultSet(rs));
             }
+        } catch (SQLException e) {
+            LOG.warn("Failed book search for searchTerm '" + searchTerm + "'.", e);
         }
         return bookList;
     }
@@ -67,7 +69,7 @@ public class BookRepository {
                 return createBookFromResultSet(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed retrieving book with id '" + bookId + "'.", e);
         }
         return null;
     }
@@ -87,19 +89,19 @@ public class BookRepository {
                 id = generatedKeys.getLong(1);
                 long finalId = id;
                 genresToInsert.stream().forEach(genre -> {
-                    String query2 = "INSERT INTO books_to_genres(bookId, genreId) VALUES (?, ?)";
+                    String query2 = "INSERT INTO books_to_genres(bookId, genreIdz) VALUES (?, ?)";
                     try (PreparedStatement statement2 = connection.prepareStatement(query2);
                     ) {
                         statement2.setInt(1, (int) finalId);
                         statement2.setInt(2, genre.getId());
                         statement2.executeUpdate();
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        LOG.error("Failed inserting genre with id '" + genre.getId() + "' into new book with id '" + finalId + "'.", e);
                     }
                 });
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed creating new book.", e);
         }
         return id;
     }
@@ -116,8 +118,9 @@ public class BookRepository {
             statement.executeUpdate(query2);
             statement.executeUpdate(query3);
             statement.executeUpdate(query4);
+            auditLogger.audit("Deleted book with id '" + bookId + "'.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed deleting book with id '" + bookId + "'.");
         }
     }
 
